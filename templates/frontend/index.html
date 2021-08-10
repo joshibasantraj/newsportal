@@ -1,0 +1,142 @@
+{% extends 'frontend/base.html' %}
+{% load static %}
+
+{% block content %}
+{% if bignews %}
+    
+    <section class="big-news">
+        <div class="container">
+            <div class="news-details">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="big-news-img">
+                            <a href="{% url 'newsdetail' bignews.id %}">
+                                <figure style="background-image: url({{bignews.image.url}})"></figure>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-6 col-sm-12">
+                        <div class="big-news-detail news-title">
+                            <h2><a href="{% url 'newsdetail' bignews.id %}">{{bignews.title}}</a></h2>
+                            <p>
+                                <span>{{bignews.location}}– </span>
+                                <span>सम्बाददाता</span>
+                            </p>
+                            <p>
+                                {{bignews.summary}} 
+                            </p>
+                            <span>{{bignews.created_at}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endif %}
+
+{% for cat in categories %}
+    <section class="politics">
+        <div class="container">
+            <div class="section-title">
+                <h2><a href="{% url 'catnews' cat.id %}">{{cat.title}}</a></h2>
+                <p><a href="{% url 'catnews' cat.id %}">सबै हर्नुहोस् <i class="fa fa-bars" aria-hidden="true"></i></a></p>
+            </div>
+            <div class="news-wrapper">
+            {% if cat.news_set.first %}
+                <div class="row">
+                    <div class="col-lg-5 col-md-6 col-sm-12">
+                        <div class="politics-img-news news-title">
+                            <figure style="background-image: url({{cat.news_set.first.image.url}})"></figure>
+                            <h2><a href="{% url 'newsdetail' cat.news_set.first.id %}">{{cat.news_set.first.title}}</a></h2>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-md-6 col-sm-12">
+                        <div class="politics-news-list">
+                            <div class="listing">
+                                <div class="row">
+
+                                {% for news in cat.news_set.all %}
+                                    <div class="col-md-4">
+                                        <a href="{% url 'newsdetail' news.id %}"><figure style="background-image: url({{news.image.url}})"></figure></a>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h3><a href="{% url 'newsdetail' news.id %}">{{news.title}}</a></h3>
+                                        <p>
+                                            {{news.summary}} 
+                                        </p>
+                                    </div>
+                                {% endfor %}
+                            
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            </div>
+        </div>
+    </section>
+{% endfor %}
+
+
+    <section class="video">
+        <div class="container">
+            <div class="section-title">
+                <h2><a href="#">भिडियो</a></h2>
+                <p><a href="#">सबै हर्नुहोस् <i class="fa fa-bars" aria-hidden="true"></i></a></p>
+            </div>
+            <div class="news-wrapper">
+                <div class="row">
+                    <div class="col-lg-7 col-md-7 col-sm-12">
+                        <div class="big-video">
+                            <iframe width="100%" height="100%" src="{{videos.first.video_link}}&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                            <h3><a href="#">{{videos.first.title}}</a></h3>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-5 col-sm-12">
+                        <div class="small-video">
+                            <div class="row">
+                            {% for video in videos %}
+                                <div class="col-md-5">
+                                        <iframe width="100%" height="100%" src="{{video.video_link}}&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                                </div>
+                                <div class="col-md-7">
+                                        <h3><a href="#">{{video.title}}</a></h3>
+                                </div>
+                            {% endfor %}
+                             
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+   
+
+    <section class="gallery">
+            <div class="container">
+                <div class="section-title">
+                    <h2><a href="#">फोटो फिचर</a></h2>
+                    <p><a href="#">सबै हर्नुहोस् <i class="fa fa-bars" aria-hidden="true"></i></a></p>
+                </div>
+                <div class="news-wrapper">
+                    <div class="row">
+                       
+                      {% for gal in gallery %}
+                        <div class="col-lg-3 col-md-4 col-sm-12">
+                            <div class="gallery-fig">
+                                <img src="{{gal.cover_image.url}}" style="max-height: 100%;">
+                                <div class="gallery-hover">
+                                    <a href="{{gal.cover_image.url}}" data-lightbox="gallery"><i class="fa fa-search-plus" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                       {% endfor %}
+                    </div>
+                </div>
+             </div>
+    </section>
+
+{% endblock %}

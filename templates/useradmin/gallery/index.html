@@ -1,0 +1,50 @@
+{% extends 'useradmin/base.html' %}
+ {% block title1 %}Gallery List Page{% endblock title1%}
+ {% block title2 %}All Galleries{% endblock title2%}
+ {% block add %}
+<a href="{% url 'gallery-create' %}" class="btn btn-success pull-right">
+    <i class="fas fa-plus"></i> Add Gallery
+</a>
+{% endblock add %}
+{% block content %}
+<table class="table jambo_table">
+    <thead>
+        <th>Sno</th>
+        <th>Title</th>
+        <th>Image</th>
+        <th>Status</th>
+        <th>Summary</th>
+        <th>Added By</th>
+        <th>Action</th>
+    </thead>
+    <tbody>
+        {% for gallery in gallery_list %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{gallery.title}}</td>
+            <td>
+                <img style="max-width: 150px;" src="{{gallery.cover_image.url}}" alt="" class="img img-responsive img-thumbnail">
+            </td>
+            <td>{{gallery.status|title}}</td>
+            <td>{{gallery.summary}}</td>
+            <td>{{gallery.added_by.username}}</td>
+            <td>
+                <a href="{% url 'gallery-update' gallery.id %}" class="btn btn-primary">Edit</a>
+                <form method="POST" action="{% url 'gallery-delete' gallery.id %}" onsubmit="return confirm('Are you sure you want to delete this gallery?')">
+                {% csrf_token %}
+                <input type="submit" class="btn btn-danger" value="Delete">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}
+
+{% block message %}
+    {% if messages %}
+      {% for message in messages %}
+        <p class="alert alert-success">{{message}}</p>
+      {% endfor %}
+    {% endif %}
+{% endblock %}

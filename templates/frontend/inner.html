@@ -1,0 +1,29 @@
+{% extends 'frontend/base.html' %}
+{% block content %}
+    <section class="inner">
+        <div class="container">
+            <div class="row">
+
+            {% for news in news %}
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <div class="inner-img">
+                        <a href="{% url 'newsdetail' news.id %}">
+                            <figure style="background-image: url({{news.image.url}})"></figure>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-12">
+                    <div class="inner-details">
+                        <h2><a href="{% url 'newsdetail' news.id %}">{{news.title}}</a></h2>
+                        <p>{{news.location}}– {{news.summary}}</p>
+                    </div>
+                </div>
+            {% endfor %}
+
+             
+              
+            </div>
+        </div>
+    </section>
+{% endblock %}
+  

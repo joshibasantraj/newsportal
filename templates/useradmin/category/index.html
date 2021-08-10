@@ -1,0 +1,52 @@
+{% extends 'useradmin/base.html' %}
+ {% block title1 %}Category List Page{% endblock title1%}
+ {% block title2 %}All categories{% endblock title2%}
+ {% block add %}
+<a href="{% url 'category-create' %}" class="btn btn-success pull-right">
+    <i class="fas fa-plus"></i> Add Category
+</a>
+{% endblock add %}
+{% block content %}
+<table class="table jambo_table">
+    <thead>
+        <th>Sno</th>
+        <th>Title</th>
+        <th>Image</th>
+        <th>Status</th>
+        <th>Summary</th>
+        <th>Added By</th>
+        <th>Action</th>
+    </thead>
+    <tbody>
+        {% for category in categories %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{category.title}}</td>
+            <td>
+            {% if category.image %}
+                <img style="max-width: 150px;" src="{{category.image.url}}" alt="" class="img img-responsive img-thumbnail">
+            {% endif %}
+            </td>
+            <td>{{category.status|title}}</td>
+            <td>{{category.summary}}</td>
+            <td>{{category.added_by.username}}</td>
+            <td>
+                <a href="{% url 'category-update' category.id %}" class="btn btn-primary">Edit</a>
+                <form method="POST" action="{% url 'category-delete' category.id %}" onsubmit="return confirm('Are you sure you want to delete this category?')">
+                {% csrf_token %}
+                <input type="submit" class="btn btn-danger" value="Delete">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}
+
+{% block message %}
+    {% if messages %}
+      {% for message in messages %}
+        <p class="alert alert-success">{{message}}</p>
+      {% endfor %}
+    {% endif %}
+{% endblock %}

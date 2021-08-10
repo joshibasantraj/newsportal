@@ -1,0 +1,54 @@
+{% extends 'useradmin/base.html' %}
+ {% block title1 %}News List Page{% endblock title1%}
+ {% block title2 %}All News{% endblock title2%}
+ {% block add %}
+<a href="{% url 'news-create' %}" class="btn btn-success pull-right">
+    <i class="fas fa-plus"></i> Add News
+</a>
+{% endblock add %}
+{% block content %}
+<table class="table jambo_table">
+    <thead>
+        <th>Sno</th>
+        <th>Title</th>
+        <th>Image</th>
+        <th>Status</th>
+        <th>Summary</th>
+        <th>Added By</th>
+        <th>Action</th>
+    </thead>
+    <tbody>
+        {% for news in news_list %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{news.title}}</td>
+            <td>
+            {% if news.image %}
+                <img style="max-width: 150px;" src="{{news.image.url}}" alt="" class="img img-responsive img-thumbnail">
+            {% else %}
+                No Image
+            {% endif %}
+            </td>
+            <td>{{news.status|title}}</td>
+            <td>{{news.summary}}</td>
+            <td>{{news.added_by.username}}</td>
+            <td>
+                <a href="{% url 'news-update' news.id %}" class="btn btn-primary">Edit</a>
+                <form method="POST" action="{% url 'news-delete' news.id %}" onsubmit="return confirm('Are you sure you want to delete this news?')">
+                {% csrf_token %}
+                <input type="submit" class="btn btn-danger" value="Delete">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}
+
+{% block message %}
+    {% if messages %}
+      {% for message in messages %}
+        <p class="alert alert-success">{{message}}</p>
+      {% endfor %}
+    {% endif %}
+{% endblock %}
